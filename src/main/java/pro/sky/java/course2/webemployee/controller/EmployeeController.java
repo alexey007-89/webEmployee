@@ -1,9 +1,13 @@
-package pro.sky.java.course2.webemployee;
+package pro.sky.java.course2.webemployee.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pro.sky.java.course2.webemployee.service.EmployeeService;
+import pro.sky.java.course2.webemployee.data.Employee;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/employee")
@@ -17,17 +21,26 @@ public class EmployeeController {
     @GetMapping("/add")
     public String add(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
         employeeService.addEmployee(firstName,lastName);
-        return "Сотрудник " + firstName + " " + lastName + " успешно создан.";
+        return message(firstName, lastName,"создан");
+    }
+
+    private String message(String firstName, String lastName, String action) {
+        return "Сотрудник " + firstName + " " + lastName + " успешно " + action;
     }
 
     @GetMapping("/remove")
     public String remove(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
         employeeService.removeEmployee(firstName,lastName);
-        return "Сотрудник " + firstName + " " + lastName + " удален.";
+        return message(firstName, lastName,"удален");
     }
 
     @GetMapping("/find")
     public Employee find(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
         return employeeService.findEmployee(firstName,lastName);
+    }
+
+    @GetMapping("/get-all")
+    public List<Employee> getAll() {
+        return employeeService.getEmployees();
     }
 }

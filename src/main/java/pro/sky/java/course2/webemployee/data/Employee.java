@@ -1,4 +1,4 @@
-package pro.sky.java.course2.webemployee;
+package pro.sky.java.course2.webemployee.data;
 
 import java.util.Objects;
 
