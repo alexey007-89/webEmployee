@@ -10,8 +10,7 @@ import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final Map<Employee, Integer> employees;
-    Integer id = 0;
+    private final Map<String, Employee> employees;
 
     public EmployeeServiceImpl() {
         this.employees = new HashMap<>();
@@ -19,35 +18,33 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        Employee newEmployee = new Employee(firstName, lastName);
-        for (Employee employee: employees.keySet()) {
-            if (newEmployee.equals(employee)) {
-                return employee;
-            }
+        if (employees.containsKey(firstName + lastName)) {
+            return employees.get(firstName + lastName);
+        } else {
+            throw new EmployeeNotFoundException("Employee not found");
         }
-        throw new EmployeeNotFoundException("Employee not found");
     }
 
     @Override
     public void addEmployee(String firstName, String lastName) {
         Employee newEmployee = new Employee(firstName, lastName);
-        if (employees.containsKey(newEmployee)) {
+        if (employees.containsKey(firstName + lastName)) {
             throw new EmployeeAlreadyExistException("Employee already exist");
         } else {
-            employees.put(newEmployee, id);
+            employees.put(firstName + lastName, newEmployee);
         }
     }
 
     @Override
     public void removeEmployee(String firstName, String lastName) {
         Employee newEmployee = new Employee(firstName, lastName);
-        if (!employees.remove(newEmployee, id)) {
+        if (!employees.remove(firstName + lastName, newEmployee)) {
             throw new EmployeeNotFoundException("Employee not found");
         }
     }
 
     @Override
-    public Set<Employee> getEmployees() {
-        return employees.keySet();
+    public Collection<Employee> getEmployees() {
+        return employees.values();
     }
 }
