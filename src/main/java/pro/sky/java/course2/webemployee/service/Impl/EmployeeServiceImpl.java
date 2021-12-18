@@ -6,48 +6,45 @@ import pro.sky.java.course2.webemployee.exceptions.EmployeeAlreadyExistException
 import pro.sky.java.course2.webemployee.exceptions.EmployeeNotFoundException;
 import pro.sky.java.course2.webemployee.service.EmployeeService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final List<Employee> employees;
+    private final Map<String, Employee> employees;
 
     public EmployeeServiceImpl() {
-        this.employees = new ArrayList<>();
+        this.employees = new HashMap<>();
     }
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        Employee newEmployee = new Employee(firstName, lastName);
-        for (Employee employee : employees) {
-            if (employee.equals(newEmployee)) {
-                return employee;
-            }
+        if (employees.containsKey(firstName + lastName)) {
+            return employees.get(firstName + lastName);
+        } else {
+            throw new EmployeeNotFoundException("Employee not found");
         }
-        throw new EmployeeNotFoundException("Employee not found");
     }
 
     @Override
     public void addEmployee(String firstName, String lastName) {
         Employee newEmployee = new Employee(firstName, lastName);
-        if (employees.contains(newEmployee)) {
+        if (employees.containsKey(firstName + lastName)) {
             throw new EmployeeAlreadyExistException("Employee already exist");
         } else {
-            employees.add(newEmployee);
+            employees.put(firstName + lastName, newEmployee);
         }
     }
 
     @Override
     public void removeEmployee(String firstName, String lastName) {
         Employee newEmployee = new Employee(firstName, lastName);
-        if (!employees.remove(newEmployee)) {
+        if (!employees.remove(firstName + lastName, newEmployee)) {
             throw new EmployeeNotFoundException("Employee not found");
         }
     }
 
     @Override
-    public List<Employee> getEmployees() {
-        return employees;
+    public Collection<Employee> getEmployees() {
+        return employees.values();
     }
 }

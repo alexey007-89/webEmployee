@@ -2,7 +2,8 @@ package pro.sky.java.course2.webemployee.service;
 
 import pro.sky.java.course2.webemployee.data.Employee;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 
 public interface EmployeeService {
     Employee findEmployee(String firstName, String lastName);
@@ -11,5 +12,5 @@ public interface EmployeeService {
 
     void removeEmployee(String firstName, String lastName);
 
-    List<Employee> getEmployees();
+    Collection<Employee> getEmployees();
 }
