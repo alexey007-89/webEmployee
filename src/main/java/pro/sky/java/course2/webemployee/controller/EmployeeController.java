@@ -8,7 +8,6 @@ import pro.sky.java.course2.webemployee.service.EmployeeService;
 import pro.sky.java.course2.webemployee.data.Employee;
 
 import java.util.Collection;
-import java.util.Set;
 
 
 @RestController
@@ -21,9 +20,10 @@ public class EmployeeController {
     }
 
     @GetMapping("/add")
-    public String add(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        employeeService.addEmployee(firstName,lastName);
-        return message(firstName, lastName,"создан");
+    public String add(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
+                      @RequestParam("departmentId") int departmentID, @RequestParam("salary") int salary) {
+        employeeService.addEmployee(firstName, lastName, departmentID, salary);
+        return message(firstName, lastName, "создан");
     }
 
     private String message(String firstName, String lastName, String action) {
@@ -32,17 +32,35 @@ public class EmployeeController {
 
     @GetMapping("/remove")
     public String remove(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        employeeService.removeEmployee(firstName,lastName);
-        return message(firstName, lastName,"удален");
+        employeeService.removeEmployee(firstName, lastName);
+        return message(firstName, lastName, "удален");
     }
 
     @GetMapping("/find")
     public Employee find(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        return employeeService.findEmployee(firstName,lastName);
+        return employeeService.findEmployee(firstName, lastName);
     }
 
     @GetMapping("/get-all")
     public Collection<Employee> getAll() {
         return employeeService.getEmployees();
+    }
+
+    @GetMapping("/sum-salary")
+    public String sumSalary() {
+        return "Сумма затрат на зарплаты в месяц: " + employeeService.countSumSalary() + " рублей";
+    }
+
+    @GetMapping("/min-salary")
+    public String minSalary() {
+        return String.format("Сотрудник с минимальной зарплатой: %s рублей",
+                employeeService.findMinSalary().map(Object::toString));
+    }
+
+    @GetMapping("/max-salary")
+    public String maxSalary() {
+        return String.format("Сотрудник с минимальной зарплатой: %s рублей",
+                employeeService.findMaxSalary().map(Object::toString));
+
     }
 }

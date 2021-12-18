@@ -5,10 +5,14 @@ import java.util.Objects;
 public class Employee {
     private final String firstName;
     private final String lastName;
+    private int departmentId;
+    private int salary;
 
-    public Employee(String firstName, String lastName) {
+    public Employee(String firstName, String lastName, int departmentId, int salary) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.departmentId = departmentId;
+        this.salary = salary;
     }
 
     public String getFirstName() {
@@ -17,6 +21,22 @@ public class Employee {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
     }
 
     @Override
@@ -34,7 +54,10 @@ public class Employee {
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return firstName + " " +
+                lastName + " " +
+                " №отдела: " + departmentId +
+                " з/п: " + salary;
     }
 }
 
