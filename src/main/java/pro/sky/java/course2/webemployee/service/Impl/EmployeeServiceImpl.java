@@ -58,13 +58,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Optional<Employee> findMinSalary() {
-        return employees.stream().min(Comparator.comparingInt(Employee::getSalary));
+    public Employee findMinSalary() {
+        return employees.stream()
+                .min(Comparator.comparingInt(Employee::getSalary))
+                .orElseThrow(() -> new EmployeeNotFoundException("Работник не найден"));
     }
 
     @Override
-    public Optional<Employee> findMaxSalary() {
-        return employees.stream().max(Comparator.comparingInt(Employee::getSalary));
+    public Employee findMaxSalary() {
+        return employees.stream()
+                .max(Comparator.comparingInt(Employee::getSalary))
+                .orElseThrow(() -> new EmployeeNotFoundException("Работник не найден"));
     }
 
 }

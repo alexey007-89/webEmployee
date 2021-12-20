@@ -16,7 +16,7 @@ public interface EmployeeService {
 
     long countSumSalary();
 
-    Optional<Employee> findMinSalary();
+    Employee findMinSalary();
 
-    Optional<Employee> findMaxSalary();
+    Employee findMaxSalary();
 }

@@ -54,13 +54,13 @@ public class EmployeeController {
     @GetMapping("/min-salary")
     public String minSalary() {
         return String.format("Сотрудник с минимальной зарплатой: %s рублей",
-                employeeService.findMinSalary().map(Object::toString));
+                employeeService.findMinSalary());
     }
 
     @GetMapping("/max-salary")
     public String maxSalary() {
         return String.format("Сотрудник с минимальной зарплатой: %s рублей",
-                employeeService.findMaxSalary().map(Object::toString));
+                employeeService.findMaxSalary());
 
     }
 }

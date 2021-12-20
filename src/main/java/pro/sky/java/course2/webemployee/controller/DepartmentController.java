@@ -8,6 +8,8 @@ import pro.sky.java.course2.webemployee.data.Employee;
 import pro.sky.java.course2.webemployee.service.DepartmentService;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -27,22 +29,23 @@ public class DepartmentController {
     @GetMapping("/min-salary")
     public String minSalary(@RequestParam("departmentId") int departmentID) {
         return String.format("Сотрудник с минимальной зарплатой: %s рублей",
-                departmentService.findMinSalary(departmentID).map(Object::toString));
+                departmentService.findMinSalary(departmentID));
     }
 
     @GetMapping("/max-salary")
     public String maxSalary(@RequestParam("departmentId") int departmentID) {
         return String.format("Сотрудник с минимальной зарплатой: %s рублей",
-                departmentService.findMaxSalary(departmentID).map(Object::toString));
+                departmentService.findMaxSalary(departmentID));
+    }
+
+    @GetMapping(value = "/all" , params = {"departmentId"})
+    public Collection<Employee> getAll(@RequestParam("departmentId") int departmentID) {
+            return departmentService.getAll(departmentID);
     }
 
     @GetMapping("/all")
-    public Collection<Employee> getAll(@RequestParam("departmentId") Optional<Integer> departmentID) {
-        if (departmentID.isPresent()) {
-            return departmentService.getAll(departmentID.get());
-        } else {
-            return departmentService.getAll();
-        }
+    public Map<Integer, List<Employee>> getAll() {
+        return departmentService.getAll();
     }
 }
 
