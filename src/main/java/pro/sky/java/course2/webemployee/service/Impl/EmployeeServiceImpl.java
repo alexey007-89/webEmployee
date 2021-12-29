@@ -1,9 +1,11 @@
 package pro.sky.java.course2.webemployee.service.Impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pro.sky.java.course2.webemployee.data.Employee;
 import pro.sky.java.course2.webemployee.exceptions.EmployeeAlreadyExistException;
 import pro.sky.java.course2.webemployee.exceptions.EmployeeNotFoundException;
+import pro.sky.java.course2.webemployee.exceptions.WrongRequestException;
 import pro.sky.java.course2.webemployee.service.EmployeeService;
 
 import java.util.*;
@@ -19,31 +21,55 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        Employee newEmployee = new Employee(firstName, lastName,0,0);
-        List<Employee> select = employees.stream().filter(employee -> employee.equals(newEmployee))
-                .distinct().collect(Collectors.toList());
-        if (!select.isEmpty()) {
-            return select.get(0);
+        if (StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName)) {
+            firstName = safeCapitalize(firstName);
+            lastName = safeCapitalize(lastName);
+            Employee newEmployee = new Employee(firstName, lastName, 0, 0);
+            List<Employee> select = employees.stream().filter(employee -> employee.equals(newEmployee))
+                    .distinct().collect(Collectors.toList());
+            if (!select.isEmpty()) {
+                return select.get(0);
+            } else {
+                throw new EmployeeNotFoundException("Employee not found");
+            }
         } else {
-            throw new EmployeeNotFoundException("Employee not found");
+            throw new WrongRequestException("Wrong request");
         }
+    }
+
+    private String safeCapitalize(String firstName) {
+        String str = StringUtils.toRootLowerCase(firstName);
+        str = StringUtils.capitalize(str);
+        return str;
     }
 
     @Override
     public void addEmployee(String firstName, String lastName, int departmentID, int salary) {
-        Employee newEmployee = new Employee(firstName, lastName, departmentID, salary);
-        if (employees.contains(newEmployee)) {
-            throw new EmployeeAlreadyExistException("Employee already exist");
+        if (StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName)) {
+            firstName = safeCapitalize(firstName);
+            lastName = safeCapitalize(lastName);
+            Employee newEmployee = new Employee(firstName, lastName, departmentID, salary);
+            if (employees.contains(newEmployee)) {
+                throw new EmployeeAlreadyExistException("Employee already exist");
+            } else {
+                employees.add(newEmployee);
+            }
         } else {
-            employees.add(newEmployee);
+            throw new WrongRequestException("Wrong request");
         }
     }
 
     @Override
     public void removeEmployee(String firstName, String lastName) {
-        Employee newEmployee = new Employee(firstName, lastName,0,0);
-        if (!employees.remove(newEmployee)) {
-            throw new EmployeeNotFoundException("Employee not found");
+        if (StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName)) {
+            firstName = safeCapitalize(firstName);
+            lastName = safeCapitalize(lastName);
+            Employee newEmployee = new Employee(firstName, lastName, 0, 0);
+            if (!employees.remove(newEmployee)) {
+                throw new EmployeeNotFoundException("Employee not found");
+            }
+        } else {
+            throw new WrongRequestException("Wrong request");
         }
     }
 
@@ -70,5 +96,4 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .max(Comparator.comparingInt(Employee::getSalary))
                 .orElseThrow(() -> new EmployeeNotFoundException("Работник не найден"));
     }
-
 }
