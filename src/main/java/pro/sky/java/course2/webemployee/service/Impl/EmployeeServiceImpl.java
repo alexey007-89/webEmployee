@@ -45,31 +45,29 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void addEmployee(String firstName, String lastName, int departmentID, int salary) {
+        Employee newEmployee = createEmployee(firstName, lastName,departmentID,salary);
+        if (employees.contains(newEmployee)) {
+            throw new EmployeeAlreadyExistException("Employee already exist");
+        } else {
+            employees.add(newEmployee);
+        }
+    }
+
+    private Employee createEmployee(String firstName, String lastName, int departmentID, int salary) {
         if (StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName)) {
             firstName = safeCapitalize(firstName);
             lastName = safeCapitalize(lastName);
-            Employee newEmployee = new Employee(firstName, lastName, departmentID, salary);
-            if (employees.contains(newEmployee)) {
-                throw new EmployeeAlreadyExistException("Employee already exist");
-            } else {
-                employees.add(newEmployee);
-            }
+            return new Employee(firstName, lastName, departmentID, salary);
         } else {
-            throw new WrongRequestException("Wrong request");
+            throw new WrongRequestException("Not valid firstname or lastname");
         }
     }
 
     @Override
     public void removeEmployee(String firstName, String lastName) {
-        if (StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName)) {
-            firstName = safeCapitalize(firstName);
-            lastName = safeCapitalize(lastName);
-            Employee newEmployee = new Employee(firstName, lastName, 0, 0);
-            if (!employees.remove(newEmployee)) {
-                throw new EmployeeNotFoundException("Employee not found");
-            }
-        } else {
-            throw new WrongRequestException("Wrong request");
+        Employee newEmployee = createEmployee(firstName, lastName, 0, 0);
+        if (!employees.remove(newEmployee)) {
+            throw new EmployeeNotFoundException("Employee not found");
         }
     }
 
