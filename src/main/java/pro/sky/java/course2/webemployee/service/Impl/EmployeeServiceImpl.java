@@ -21,19 +21,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        if (StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName)) {
-            firstName = safeCapitalize(firstName);
-            lastName = safeCapitalize(lastName);
-            Employee newEmployee = new Employee(firstName, lastName, 0, 0);
-            List<Employee> select = employees.stream().filter(employee -> employee.equals(newEmployee))
-                    .distinct().collect(Collectors.toList());
-            if (!select.isEmpty()) {
-                return select.get(0);
-            } else {
-                throw new EmployeeNotFoundException("Employee not found");
-            }
+        Employee newEmployee = createEmployee(firstName, lastName, 0, 0);
+        List<Employee> select = employees.stream().filter(employee -> employee.equals(newEmployee))
+                .distinct().collect(Collectors.toList());
+        if (!select.isEmpty()) {
+            return select.get(0);
         } else {
-            throw new WrongRequestException("Wrong request");
+            throw new EmployeeNotFoundException("Employee not found");
         }
     }
 
