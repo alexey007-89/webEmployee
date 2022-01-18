@@ -9,10 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pro.sky.java.course2.webemployee.data.Employee;
 import pro.sky.java.course2.webemployee.exceptions.EmployeeNotFoundException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -91,18 +88,17 @@ class DepartmentServiceTest {
     }
     @Test
     void shouldGetAllWorkCorrect() {
-        List<Employee> expected1 = expected.stream()
-                .filter(employee -> employee.getDepartmentId() == 1)
-                .collect(Collectors.toList());
         when(employeeServiceMock.getEmployees())
-                .thenReturn(expected1);
-        assertEquals(expected1, out.getAll(1));
-        List<Employee> expected2 = expected.stream()
-                .filter(employee -> employee.getDepartmentId() == 2)
-                .collect(Collectors.toList());
-        when(employeeServiceMock.getEmployees())
-                .thenReturn(expected2);
-        assertEquals(expected2, out.getAll(2));
+                .thenReturn(expected);
+        List<Employee> expected1 = new ArrayList<>();
+        expected1.add(employee1);
+        expected1.add(employee2);
+        expected1.add(employee3);
+        assertIterableEquals(expected1, out.getAll(1));
+        List<Employee> expected2 = new ArrayList<>();
+        expected2.add(employee4);
+        expected2.add(employee5);
+        assertIterableEquals(expected2, out.getAll(2));
         verify(employeeServiceMock, times(2)).getEmployees();
 
     }
@@ -111,8 +107,16 @@ class DepartmentServiceTest {
     void shouldTestGetAllWorkCorrect() {
         when(employeeServiceMock.getEmployees())
                 .thenReturn(expected);
-        Map<Integer, List<Employee>> expectedMap = expected.stream()
-                .collect(Collectors.groupingBy(Employee::getDepartmentId));
+        List<Employee> expected1 = new ArrayList<>();
+        expected1.add(employee1);
+        expected1.add(employee2);
+        expected1.add(employee3);
+        List<Employee> expected2 = new ArrayList<>();
+        expected2.add(employee4);
+        expected2.add(employee5);
+        Map<Integer, List<Employee>> expectedMap = new HashMap<>();
+        expectedMap.put(1, expected1);
+        expectedMap.put(2, expected2);
         assertEquals(expectedMap, out.getAll());
         verify(employeeServiceMock, times(1)).getEmployees();
     }
