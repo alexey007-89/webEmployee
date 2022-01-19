@@ -10,10 +10,10 @@ import pro.sky.java.course2.webemployee.data.Employee;
 import pro.sky.java.course2.webemployee.exceptions.EmployeeNotFoundException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static pro.sky.java.course2.webemployee.constant.EmployeeConstants.*;
 
 @ExtendWith(MockitoExtension.class)
 class DepartmentServiceTest {
@@ -32,16 +32,11 @@ class DepartmentServiceTest {
 
     @BeforeEach
     public void setUp() {
-        employee1 = new Employee("Alexey", "Ivanov", 1, 50_000);
-        employee2 = new Employee("Ivan", "Kashtanov", 1, 60_000);
-        employee3 = new Employee("Kiril", "Kucherov", 1, -10_000);
-        employee4 = new Employee("Darya", "Prihodko", 2, -40_000);
-        employee5 = new Employee("Elena", "Golovach", 2, 0);
-        expected.add(employee1);
-        expected.add(employee2);
-        expected.add(employee3);
-        expected.add(employee4);
-        expected.add(employee5);
+        expected.add(EMPLOYEE_2_1);
+        expected.add(EMPLOYEE_2_2);
+        expected.add(EMPLOYEE_2_3);
+        expected.add(EMPLOYEE_2_4);
+        expected.add(EMPLOYEE_2_5);
     }
 
     @Test
@@ -57,8 +52,8 @@ class DepartmentServiceTest {
     void shouldFindMinSalaryWorkCorrect() {
         when(employeeServiceMock.getEmployees())
                 .thenReturn(expected);
-        assertEquals(employee3, out.findMinSalary(1));
-        assertEquals(employee4, out.findMinSalary(2));
+        assertEquals(EMPLOYEE_2_3, out.findMinSalary(1));
+        assertEquals(EMPLOYEE_2_4, out.findMinSalary(2));
         verify(employeeServiceMock, times(2)).getEmployees();
     }
 
@@ -74,8 +69,8 @@ class DepartmentServiceTest {
     void shouldFindMaxSalaryWorkCorrect() {
         when(employeeServiceMock.getEmployees())
                 .thenReturn(expected);
-        assertEquals(employee2, out.findMaxSalary(1));
-        assertEquals(employee5, out.findMaxSalary(2));
+        assertEquals(EMPLOYEE_2_2, out.findMaxSalary(1));
+        assertEquals(EMPLOYEE_2_5, out.findMaxSalary(2));
         verify(employeeServiceMock, times(2)).getEmployees();
     }
 
@@ -91,13 +86,13 @@ class DepartmentServiceTest {
         when(employeeServiceMock.getEmployees())
                 .thenReturn(expected);
         List<Employee> expected1 = new ArrayList<>();
-        expected1.add(employee1);
-        expected1.add(employee2);
-        expected1.add(employee3);
+        expected1.add(EMPLOYEE_2_1);
+        expected1.add(EMPLOYEE_2_2);
+        expected1.add(EMPLOYEE_2_3);
         assertIterableEquals(expected1, out.getAll(1));
         List<Employee> expected2 = new ArrayList<>();
-        expected2.add(employee4);
-        expected2.add(employee5);
+        expected2.add(EMPLOYEE_2_4);
+        expected2.add(EMPLOYEE_2_5);
         assertIterableEquals(expected2, out.getAll(2));
         verify(employeeServiceMock, times(2)).getEmployees();
 
@@ -108,12 +103,12 @@ class DepartmentServiceTest {
         when(employeeServiceMock.getEmployees())
                 .thenReturn(expected);
         List<Employee> expected1 = new ArrayList<>();
-        expected1.add(employee1);
-        expected1.add(employee2);
-        expected1.add(employee3);
+        expected1.add(EMPLOYEE_2_1);
+        expected1.add(EMPLOYEE_2_2);
+        expected1.add(EMPLOYEE_2_3);
         List<Employee> expected2 = new ArrayList<>();
-        expected2.add(employee4);
-        expected2.add(employee5);
+        expected2.add(EMPLOYEE_2_4);
+        expected2.add(EMPLOYEE_2_5);
         Map<Integer, List<Employee>> expectedMap = new HashMap<>();
         expectedMap.put(1, expected1);
         expectedMap.put(2, expected2);

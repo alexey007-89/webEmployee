@@ -12,22 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static pro.sky.java.course2.webemployee.constant.EmployeeConstants.*;
 
 class EmployeeServiceTest {
     private final EmployeeService out = new EmployeeServiceImpl();
     List<Employee> expected = new ArrayList<>();
-    Employee employee1;
-    Employee employee2;
-    Employee employee3;
 
     @BeforeEach
     public void setUp() {
-        employee1 = new Employee("Alexey", "Ivanov", 1, 50_000);
-        employee2 = new Employee("Ivan", "Kashtanov", 2, 60_000);
-        employee3 = new Employee("Kiril", "Kucherov", 3, 20_000);
-        expected.add(employee1);
-        expected.add(employee2);
-        expected.add(employee3);
+        expected.add(EMPLOYEE_1);
+        expected.add(EMPLOYEE_2);
+        expected.add(EMPLOYEE_3);
     }
 
     @Test
@@ -56,7 +51,7 @@ class EmployeeServiceTest {
         out.addEmployee("Ivan", "Kashtanov", 2, 60_000);
         out.addEmployee("Kiril", "Kucherov", 3, 20_000);
         out.removeEmployee("Kiril", "Kucherov");
-        expected.remove(employee3);
+        expected.remove(EMPLOYEE_3);
         assertEquals(expected, out.getEmployees());
     }
 
@@ -72,9 +67,9 @@ class EmployeeServiceTest {
         out.addEmployee("Alexey", "Ivanov", 1, 50_000);
         out.addEmployee("Ivan", "Kashtanov", 2, 60_000);
         out.addEmployee("Kiril", "Kucherov", 3, 20_000);
-        assertEquals(employee1, out.findEmployee("Alexey", "Ivanov"));
-        assertEquals(employee2, out.findEmployee("Ivan", "Kashtanov"));
-        assertEquals(employee3, out.findEmployee("Kiril", "Kucherov"));
+        assertEquals(EMPLOYEE_1, out.findEmployee("Alexey", "Ivanov"));
+        assertEquals(EMPLOYEE_2, out.findEmployee("Ivan", "Kashtanov"));
+        assertEquals(EMPLOYEE_3, out.findEmployee("Kiril", "Kucherov"));
     }
 
     @Test
@@ -97,7 +92,7 @@ class EmployeeServiceTest {
         out.addEmployee("Alexey", "Ivanov", 1, 50_000);
         out.addEmployee("Ivan", "Kashtanov", 2, 60_000);
         out.addEmployee("Kiril", "Kucherov", 3, 20_000);
-        assertEquals(employee3, out.findMinSalary());
+        assertEquals(EMPLOYEE_3, out.findMinSalary());
     }
 
     @Test
@@ -105,7 +100,7 @@ class EmployeeServiceTest {
         out.addEmployee("Alexey", "Ivanov", 1, 50_000);
         out.addEmployee("Ivan", "Kashtanov", 2, 60_000);
         out.addEmployee("Kiril", "Kucherov", 3, 20_000);
-        assertEquals(employee2, out.findMaxSalary());
+        assertEquals(EMPLOYEE_2, out.findMaxSalary());
     }
 
     @Test
